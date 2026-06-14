@@ -1,0 +1,39 @@
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: system-mqtt-broker
+    ports:
+      - "1884:1883"
+    volumes:
+      - ./config:/mosquitto/config:ro
+    networks:
+      - iot-net
+
+  subscriber:
+    image: eclipse-mosquitto:latest
+    container_name: system-mqtt-subscriber
+    depends_on:
+      - mqtt-broker
+    command: mosquitto_sub -h mqtt-broker -t system/info -v
+    restart: unless-stopped
+    networks:
+      - iot-net
+
+  system-monitor-01:
+    build: .
+    container_name: system-monitor-01
+    depends_on:
+      - mqtt-broker
+    environment:
+      MQTT_BROKER: mqtt-broker
+      MQTT_PORT: "1883"
+      MQTT_TOPIC: system/info
+      DEVICE_ID: system-monitor-01
+      PUBLISH_INTERVAL: "2"
+    restart: unless-stopped
+    networks:
+      - iot-net
+
+networks:
+  iot-net:
+    name: iot-net

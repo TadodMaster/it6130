@@ -1,0 +1,55 @@
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./config:/mosquitto/config:ro
+
+  subscriber:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-subscriber
+    depends_on:
+      - mqtt-broker
+    command: mosquitto_sub -h mqtt-broker -t iot/sensors -v
+    restart: unless-stopped
+
+  sensor-01:
+    build: .
+    container_name: sensor-01
+    depends_on:
+      - mqtt-broker
+    environment:
+      MQTT_BROKER: mqtt-broker
+      MQTT_PORT: "1883"
+      MQTT_TOPIC: iot/sensors
+      DEVICE_ID: sensor-01
+      PUBLISH_INTERVAL: "2"
+    restart: unless-stopped
+
+  sensor-02:
+    build: .
+    container_name: sensor-02
+    depends_on:
+      - mqtt-broker
+    environment:
+      MQTT_BROKER: mqtt-broker
+      MQTT_PORT: "1883"
+      MQTT_TOPIC: iot/sensors
+      DEVICE_ID: sensor-02
+      PUBLISH_INTERVAL: "3"
+    restart: unless-stopped
+
+  sensor-03:
+    build: .
+    container_name: sensor-03
+    depends_on:
+      - mqtt-broker
+    environment:
+      MQTT_BROKER: mqtt-broker
+      MQTT_PORT: "1883"
+      MQTT_TOPIC: iot/sensors
+      DEVICE_ID: sensor-03
+      PUBLISH_INTERVAL: "5"
+    restart: unless-stopped

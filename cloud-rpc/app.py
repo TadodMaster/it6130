@@ -3,7 +3,7 @@ import requests
 BASE = "https://thingsboard.cloud"
 
 USERNAME = "tadod.de@gmail.com"
-PASSWORD = "Wup9jG858:Ujqgr"
+PASSWORD = "***"
 
 # Bước 1: Đăng nhập, lấy JWT
 resp = requests.post(f"{BASE}/api/auth/login",

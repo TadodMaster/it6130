@@ -6,7 +6,7 @@ r = requests.post(
     f"{BASE}/api/auth/login",
     json={
         "username": "tadod.de@gmail.com",
-        "password": "Wup9jG858:Ujqgr"
+        "password": "***"
     }
 )
 

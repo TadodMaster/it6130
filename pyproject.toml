@@ -6,4 +6,6 @@ requires-python = ">=3.10"
 dependencies = [
     "paho-mqtt>=2.1.0",
     "requests>=2.32.0",
+    "psutil",
+    "influxdb-client==1.50.0"
 ]

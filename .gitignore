@@ -220,3 +220,5 @@ __marimo__/
 .venv
 device.key
 token.key
+
+.claude
